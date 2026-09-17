@@ -1,19 +1,15 @@
-// Chave utilizada no LocalStorage
 const CHAVE_CURSOS = "educonecta_cursos";
 
-// Elementos da interface
 const formCurso = document.getElementById("form-curso");
 const tabelaCursos = document.getElementById("tabela-cursos");
 const btnSalvarCurso = document.getElementById("btn-salvar");
 const btnCancelarCurso = document.getElementById("btn-cancelar");
 
-// Evento de carregamento
 document.addEventListener("DOMContentLoaded", () => {
   inicializarCursos();
   listarCursos();
 });
 
-// Carga inicial
 function inicializarCursos() {
   if (!localStorage.getItem(CHAVE_CURSOS)) {
     const dadosIniciais = [
@@ -24,7 +20,6 @@ function inicializarCursos() {
   }
 }
 
-// Funções auxiliares do LocalStorage
 function obterCursos() {
   const dados = localStorage.getItem(CHAVE_CURSOS);
   return dados ? JSON.parse(dados) : [];
@@ -34,7 +29,6 @@ function salvarCursos(lista) {
   localStorage.setItem(CHAVE_CURSOS, JSON.stringify(lista));
 }
 
-// READ (Consultar / Listar)
 function listarCursos() {
   const lista = obterCursos();
   tabelaCursos.innerHTML = "";
@@ -64,7 +58,6 @@ function listarCursos() {
   });
 }
 
-// CREATE e UPDATE
 formCurso.addEventListener("submit", (evento) => {
   evento.preventDefault();
 
@@ -77,7 +70,6 @@ formCurso.addEventListener("submit", (evento) => {
   let lista = obterCursos();
 
   if (id) {
-    // UPDATE
     lista = lista.map(curso => {
       if (curso.id === Number(id)) {
         return { id: Number(id), nome, carga, modalidade, descricao };
@@ -85,7 +77,6 @@ formCurso.addEventListener("submit", (evento) => {
       return curso;
     });
   } else {
-    // CREATE
     const novoCurso = {
       id: Date.now(),
       nome,
@@ -101,7 +92,6 @@ formCurso.addEventListener("submit", (evento) => {
   cancelarEdicaoCurso();
 });
 
-// Preenche o formulário para edição
 function carregarCursoParaEdicao(id) {
   const lista = obterCursos();
   const curso = lista.find(item => item.id === id);
@@ -117,7 +107,6 @@ function carregarCursoParaEdicao(id) {
   btnCancelarCurso.classList.remove("d-none");
 }
 
-// Cancela o modo de edição
 function cancelarEdicaoCurso() {
   formCurso.reset();
   document.getElementById("curso-id").value = "";
@@ -125,7 +114,6 @@ function cancelarEdicaoCurso() {
   btnCancelarCurso.classList.add("d-none");
 }
 
-// DELETE
 function excluirCurso(id) {
   if (confirm("Deseja realmente remover este curso?")) {
     let lista = obterCursos();

@@ -1,30 +1,25 @@
-// Chave utilizada no LocalStorage
 const CHAVE_ALUNOS = "educonecta_alunos";
 
-// Elementos da interface
 const formAluno = document.getElementById("form-aluno");
 const tabelaAlunos = document.getElementById("tabela-alunos");
 const btnSalvarAluno = document.getElementById("btn-salvar");
 const btnCancelarAluno = document.getElementById("btn-cancelar");
 
-// Evento disparado quando a página termina de carregar
 document.addEventListener("DOMContentLoaded", () => {
   inicializarAlunos();
   listarAlunos();
 });
 
-// Carga inicial se não houver dados no LocalStorage
 function inicializarAlunos() {
   if (!localStorage.getItem(CHAVE_ALUNOS)) {
     const dadosIniciais = [
-      { id: 1, matricula: "202601", nome: "Carlos Eduardo Costa", email: "carlos@educonecta.com", curso: "Análise e Des. de Sistemas", status: "Ativo" },
-      { id: 2, matricula: "202602", nome: "Beatriz Helena Lima", email: "beatriz@educonecta.com", curso: "Banco de Dados", status: "Ativo" }
+      { id: 1, matricula: "123456", nome: "Pedrinho", email: "emaildeteste@email.com", curso: "Análise e Des. de Sistemas", status: "Ativo" },
+      { id: 2, matricula: "54321", nome: "Bruna", email: "emaildeteste2@email.com", curso: "Eng. Software", status: "Ativo" }
     ];
     salvarAlunos(dadosIniciais);
   }
 }
 
-// Funções auxiliares para leitura e gravação no LocalStorage
 function obterAlunos() {
   const dados = localStorage.getItem(CHAVE_ALUNOS);
   return dados ? JSON.parse(dados) : [];
@@ -34,7 +29,6 @@ function salvarAlunos(lista) {
   localStorage.setItem(CHAVE_ALUNOS, JSON.stringify(lista));
 }
 
-// READ (Consultar / Listar)
 function listarAlunos() {
   const lista = obterAlunos();
   tabelaAlunos.innerHTML = "";
@@ -65,7 +59,6 @@ function listarAlunos() {
   });
 }
 
-// CREATE e UPDATE (Criar novo ou Alterar existente)
 formAluno.addEventListener("submit", (evento) => {
   evento.preventDefault();
 
@@ -79,7 +72,6 @@ formAluno.addEventListener("submit", (evento) => {
   let lista = obterAlunos();
 
   if (id) {
-    // UPDATE: busca o item pelo ID e altera os valores
     lista = lista.map(aluno => {
       if (aluno.id === Number(id)) {
         return { id: Number(id), matricula, nome, email, curso, status };
@@ -104,7 +96,6 @@ formAluno.addEventListener("submit", (evento) => {
   cancelarEdicaoAluno();
 });
 
-// Preenche o formulário para edição
 function carregarAlunoParaEdicao(id) {
   const lista = obterAlunos();
   const aluno = lista.find(item => item.id === id);
@@ -121,7 +112,6 @@ function carregarAlunoParaEdicao(id) {
   btnCancelarAluno.classList.remove("d-none");
 }
 
-// Limpa os campos e cancela o modo de edição
 function cancelarEdicaoAluno() {
   formAluno.reset();
   document.getElementById("aluno-id").value = "";
@@ -129,7 +119,6 @@ function cancelarEdicaoAluno() {
   btnCancelarAluno.classList.add("d-none");
 }
 
-// DELETE (Excluir registro)
 function excluirAluno(id) {
   if (confirm("Deseja realmente remover este aluno?")) {
     let lista = obterAlunos();

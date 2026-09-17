@@ -1,19 +1,15 @@
-// Chave utilizada no LocalStorage
 const CHAVE_PROFESSORES = "educonecta_professores";
 
-// Elementos da interface
 const formProf = document.getElementById("form-professor");
 const tabelaProfessores = document.getElementById("tabela-professores");
 const btnSalvarProf = document.getElementById("btn-salvar");
 const btnCancelarProf = document.getElementById("btn-cancelar");
 
-// Evento de carregamento
 document.addEventListener("DOMContentLoaded", () => {
   inicializarProfessores();
   listarProfessores();
 });
 
-// Carga inicial
 function inicializarProfessores() {
   if (!localStorage.getItem(CHAVE_PROFESSORES)) {
     const dadosIniciais = [
@@ -24,7 +20,6 @@ function inicializarProfessores() {
   }
 }
 
-// Funções auxiliares do LocalStorage
 function obterProfessores() {
   const dados = localStorage.getItem(CHAVE_PROFESSORES);
   return dados ? JSON.parse(dados) : [];
@@ -34,7 +29,6 @@ function salvarProfessores(lista) {
   localStorage.setItem(CHAVE_PROFESSORES, JSON.stringify(lista));
 }
 
-// READ (Consultar / Listar)
 function listarProfessores() {
   const lista = obterProfessores();
   tabelaProfessores.innerHTML = "";
@@ -65,7 +59,6 @@ function listarProfessores() {
   });
 }
 
-// CREATE e UPDATE
 formProf.addEventListener("submit", (evento) => {
   evento.preventDefault();
 
@@ -79,7 +72,6 @@ formProf.addEventListener("submit", (evento) => {
   let lista = obterProfessores();
 
   if (id) {
-    // UPDATE
     lista = lista.map(prof => {
       if (prof.id === Number(id)) {
         return { id: Number(id), nome, email, titulacao, area, telefone };
@@ -87,7 +79,6 @@ formProf.addEventListener("submit", (evento) => {
       return prof;
     });
   } else {
-    // CREATE
     const novoProf = {
       id: Date.now(),
       nome,
@@ -104,7 +95,6 @@ formProf.addEventListener("submit", (evento) => {
   cancelarEdicaoProfessor();
 });
 
-// Preenche o formulário para edição
 function carregarProfParaEdicao(id) {
   const lista = obterProfessores();
   const prof = lista.find(item => item.id === id);
@@ -121,7 +111,6 @@ function carregarProfParaEdicao(id) {
   btnCancelarProf.classList.remove("d-none");
 }
 
-// Cancela o modo de edição
 function cancelarEdicaoProfessor() {
   formProf.reset();
   document.getElementById("prof-id").value = "";
@@ -129,7 +118,6 @@ function cancelarEdicaoProfessor() {
   btnCancelarProf.classList.add("d-none");
 }
 
-// DELETE
 function excluirProfessor(id) {
   if (confirm("Deseja realmente remover este professor?")) {
     let lista = obterProfessores();
